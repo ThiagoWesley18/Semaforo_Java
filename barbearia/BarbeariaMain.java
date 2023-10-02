@@ -255,7 +255,7 @@ public class BarbeariaMain extends Thread {
 		System.out.println("\nNumero Total de Oficial: " + numOficial);
 		System.out.println("Numero Total de Sargento: " + numSargento);
 		System.out.println("Numero Total de Cabo: " + numCabo);
-		System.out.println("Numero Total de vazi0: " + numZero);
+		System.out.println("Numero Total de vazio: " + numZero);
 
 		System.out.println("\n----Fim do Relatorio das Atividades da Barbearia----\n");
 	}
