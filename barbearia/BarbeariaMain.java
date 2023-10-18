@@ -8,16 +8,15 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class BarbeariaMain extends Thread {
-	private static GeraRelatorio relatorio;
-	private static ArrayList<Integer> comprimentoFilaOficial = new ArrayList<>();
-	private static ArrayList<Integer> comprimentoFilaSargento = new ArrayList<>();
-	private static ArrayList<Integer> comprimentoFilaCabo = new ArrayList<>();
-	private static ArrayList<Integer> temposAtendimentoOficial = new ArrayList<>();
-	private static ArrayList<Integer> temposAtendimentoSargento = new ArrayList<>();
-	private static ArrayList<Integer> temposAtendimentoCabo = new ArrayList<>();
-	private static LinkedList<Oficial> filaOficial = new LinkedList<>();
-	private static LinkedList<Sargento> filaSargento = new LinkedList<>();
-	private static LinkedList<Cabo> filaCabo = new LinkedList<>();
+	private static final ArrayList<Integer> comprimentoFilaOficial = new ArrayList<>();
+	private static final ArrayList<Integer> comprimentoFilaSargento = new ArrayList<>();
+	private static final ArrayList<Integer> comprimentoFilaCabo = new ArrayList<>();
+	private static final ArrayList<Integer> temposAtendimentoOficial = new ArrayList<>();
+	private static final ArrayList<Integer> temposAtendimentoSargento = new ArrayList<>();
+	private static final ArrayList<Integer> temposAtendimentoCabo = new ArrayList<>();
+	private static final LinkedList<Oficial> filaOficial = new LinkedList<>();
+	private static final LinkedList<Sargento> filaSargento = new LinkedList<>();
+	private static final LinkedList<Cabo> filaCabo = new LinkedList<>();
 	private static int numOficial = 0;
 	private static int numSargento = 0;
 	private static int numCabo = 0;
@@ -40,13 +39,7 @@ public class BarbeariaMain extends Thread {
 
 	public void run() {
 		if (fila == null) {
-			try {
-				// simula a espera na fila de espera.
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				System.out.println("Erro em na espera da fila...");
-				e.printStackTrace();
-			}
+
 			switch (categoria) {
 				case 0:
 					numZero++;
@@ -68,7 +61,7 @@ public class BarbeariaMain extends Thread {
 			try {
 				// executa de forma paralela o relatorio a cada 3 segundos.
 				Thread.sleep(3000);
-				relatorio = new GeraRelatorio(fila);
+				GeraRelatorio relatorio = new GeraRelatorio(fila);
 				// pega os comprimentos da fila de atendimentos por categoria.
 				comprimentoFilaOficial.add(relatorio.getComprimentoFilaOficial());
 				comprimentoFilaSargento.add(relatorio.getComprimentoFilaSargento());
@@ -79,13 +72,12 @@ public class BarbeariaMain extends Thread {
 				temposAtendimentoCabo.add(relatorio.getTempoAtendimentoCabo());
 			} catch (InterruptedException e) {
 				System.out.println("Erro em gerar o relatorio neste instante...");
-				e.printStackTrace();
 			}
 		}
 	}
 
 	public static void main(String[] args) {
-		// Scanner scan = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in);
 		int categoria;
 		int tempo = 0;
 		int tentativa = 0;
@@ -114,13 +106,13 @@ public class BarbeariaMain extends Thread {
 		Semaphore fila = new Semaphore(permissao);
 
 		while (true) {
-			// categoria = scan.nextInt();
-			// tempo = scan.nextInt();
+			 categoria = scan.nextInt();
+			 tempo = scan.nextInt();
 
 			// entradas aleatorias entre categorias de 0 a 3, e tempos aleatorios de acordo
 			// com a categoria escolhida.
-			categoria = (int) (Math.random() * ((3 - 0) + 1)) + 0;
-			tempo = TempoAleatorio.setTempo(categoria);
+			//categoria = (int) (Math.random() * ((3) + 1));
+			//tempo = TempoAleatorio.setTempo(categoria);
 
 			// insere na fila de espera de forma paralela.
 			filasBarbeariaMain.add(new BarbeariaMain(categoria, tempo));
@@ -130,7 +122,7 @@ public class BarbeariaMain extends Thread {
 				// espera de 1 a 5 segundos para adicionar na fila das cadeiras de
 				// corte(ThreadFila).
 				randomNum = (int) (Math.random() * ((5 - 1) + 1)) + 1;
-				Thread.sleep(1000 * randomNum);
+				Thread.sleep(1000L * randomNum);
 
 				try {
 					// inseri nas cadeiras de corte(ThreadFila) por ordem de patente.
@@ -162,12 +154,12 @@ public class BarbeariaMain extends Thread {
 					}
 
 				} catch (Exception e) {
-					e.printStackTrace();
+
 					System.out.println("Erro na fila de espera...");
 				}
 
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+
 				System.out.println("Erro na adimissão para a fila de corte...");
 			}
 
@@ -185,7 +177,7 @@ public class BarbeariaMain extends Thread {
 				i.join();
 			} catch (InterruptedException e) {
 				System.out.println("Erro no encerramento dos atendimentos...");
-				e.printStackTrace();
+
 			}
 		}
 		for (BarbeariaMain i : filasBarbeariaMain) {
@@ -193,7 +185,7 @@ public class BarbeariaMain extends Thread {
 				i.join();
 			} catch (InterruptedException e) {
 				System.out.println("Erro no encerramento das filas das espera ou na geraçao de dados de relatorio ...");
-				e.printStackTrace();
+
 			}
 		}
 		System.out.println("\n----Relatorio das Atividades da Barbearia----\n");

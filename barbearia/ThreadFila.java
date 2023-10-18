@@ -36,7 +36,7 @@ public class ThreadFila extends Thread{
 		return cabo.size();
 	}
 	
-	public ArrayList<Integer> getTempoAtendimentoCabo() {
+	public synchronized ArrayList<Integer> getTempoAtendimentoCabo() {
 		ArrayList<Integer> tempos = new ArrayList<>();
 		
 		if(getTamCabo() != 0) {
@@ -47,7 +47,7 @@ public class ThreadFila extends Thread{
 			tempos.add(0);
 		return tempos;
 	}
-	public ArrayList<Integer> getTempoAtendimentoOficial() {
+	public synchronized ArrayList<Integer> getTempoAtendimentoOficial() {
 		ArrayList<Integer> tempos = new ArrayList<>();
 		
 		if(getTamOficial() != 0) {
@@ -58,7 +58,7 @@ public class ThreadFila extends Thread{
 			tempos.add(0);
 		return tempos;
 	}
-	public ArrayList<Integer> getTempoAtendimentoSargento() {
+	public synchronized ArrayList<Integer> getTempoAtendimentoSargento() {
 		ArrayList<Integer> tempos = new ArrayList<>();
 		
 		if(getTamSargento() != 0) {
