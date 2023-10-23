@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.concurrent.Semaphore;
 import java.time.Duration;
 import java.time.Instant;
+import barbearia.*;
 
 public class BarbeariaMain extends Thread {
 	private static final ArrayList<Integer> comprimentoFilaOficial = new ArrayList<>();
@@ -79,7 +80,7 @@ public class BarbeariaMain extends Thread {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		int categoria;
-		int tempo = 0;
+		int tempo;
 		int tentativa = 0;
 		int randomNum;
 
@@ -106,13 +107,13 @@ public class BarbeariaMain extends Thread {
 		Semaphore fila = new Semaphore(permissao);
 
 		while (true) {
-			 categoria = scan.nextInt();
-			 tempo = scan.nextInt();
+			 //categoria = scan.nextInt();
+			 //tempo = scan.nextInt();
 
 			// entradas aleatorias entre categorias de 0 a 3, e tempos aleatorios de acordo
 			// com a categoria escolhida.
-			//categoria = (int) (Math.random() * ((3) + 1));
-			//tempo = TempoAleatorio.setTempo(categoria);
+			categoria = (int) (Math.random() * ((3) + 1));
+			tempo = TempoAleatorio.setTempo(categoria);
 
 			// insere na fila de espera de forma paralela.
 			filasBarbeariaMain.add(new BarbeariaMain(categoria, tempo));
@@ -126,21 +127,21 @@ public class BarbeariaMain extends Thread {
 
 				try {
 					// inseri nas cadeiras de corte(ThreadFila) por ordem de patente.
-					if (filaOficial.size() != 0) {
+					if (!filaOficial.isEmpty()) {
 						tentativa = 0;
 						Oficial oficial = filaOficial.removeFirst();
 						Duration duracaoFilaEspera = Duration.between(oficial.startTimeOficial, Instant.now());
 						temposEsperaOficial.add(duracaoFilaEspera.toSeconds());
 						numAtendimentosOficial++;
 						filasThread.add(new ThreadFila(oficial.categoria, oficial.tempo, fila));
-					} else if (filaSargento.size() != 0) {
+					} else if (!filaSargento.isEmpty()) {
 						tentativa = 0;
 						Sargento sargento = filaSargento.removeFirst();
 						Duration duracaoFilaEspera = Duration.between(sargento.startTimeSargento, Instant.now());
 						temposEsperaSargento.add(duracaoFilaEspera.toSeconds());
 						numAtendimentosSargento++;
 						filasThread.add(new ThreadFila(sargento.categoria, sargento.tempo, fila));
-					} else if (filaCabo.size() != 0) {
+					} else if (!filaCabo.isEmpty()) {
 						tentativa = 0;
 						Cabo cabo = filaCabo.removeFirst();
 						Duration duracaoFilaEspera = Duration.between(cabo.startTimeCabo, Instant.now());
@@ -189,15 +190,15 @@ public class BarbeariaMain extends Thread {
 			}
 		}
 		System.out.println("\n----Relatorio das Atividades da Barbearia----\n");
-		for (int i = 0; i < comprimentoFilaOficial.size(); i++) {
-			somaComprimento += comprimentoFilaOficial.get(i);
-		}
-		for (int i = 0; i < comprimentoFilaSargento.size(); i++) {
-			somaComprimento += comprimentoFilaSargento.get(i);
-		}
-		for (int i = 0; i < comprimentoFilaCabo.size(); i++) {
-			somaComprimento += comprimentoFilaCabo.get(i);
-		}
+        for (Integer integer : comprimentoFilaOficial) {
+            somaComprimento += integer;
+        }
+        for (Integer integer : comprimentoFilaSargento) {
+            somaComprimento += integer;
+        }
+        for (Integer integer : comprimentoFilaCabo) {
+            somaComprimento += integer;
+        }
 
 		tamComprimento = comprimentoFilaOficial.size() + comprimentoFilaSargento.size() + comprimentoFilaCabo.size();
 		System.out.println("Comprimento Medio das filas: " + (somaComprimento / tamComprimento));// Na maior parte do
@@ -208,15 +209,15 @@ public class BarbeariaMain extends Thread {
 																									// barbeiros para o
 																									// atendimento.
 
-		for (int i = 0; i < temposAtendimentoOficial.size(); i++) {
-			somaTempoAtendimentosOficial += temposAtendimentoOficial.get(i);
-		}
-		for (int i = 0; i < temposAtendimentoSargento.size(); i++) {
-			somaTempoAtendimentosSargento += temposAtendimentoSargento.get(i);
-		}
-		for (int i = 0; i < temposAtendimentoCabo.size(); i++) {
-			somaTempoAtendimentosCabo += temposAtendimentoCabo.get(i);
-		}
+        for (Integer integer : temposAtendimentoOficial) {
+            somaTempoAtendimentosOficial += integer;
+        }
+        for (Integer integer : temposAtendimentoSargento) {
+            somaTempoAtendimentosSargento += integer;
+        }
+        for (Integer integer : temposAtendimentoCabo) {
+            somaTempoAtendimentosCabo += integer;
+        }
 		System.out.println("\nTempo Medio de Atendimento do Oficial: "
 				+ (somaTempoAtendimentosOficial / temposAtendimentoOficial.size()));
 		System.out.println("Tempo Medio de Atendimento do Sargento: "
@@ -224,15 +225,15 @@ public class BarbeariaMain extends Thread {
 		System.out.println(
 				"Tempo Medio de Atendimento do Cabo: " + (somaTempoAtendimentosCabo / temposAtendimentoCabo.size()));
 
-		for (int i = 0; i < temposEsperaOficial.size(); i++) {
-			somaTempoEsperaOficial += temposEsperaOficial.get(i);
-		}
-		for (int i = 0; i < temposEsperaSargento.size(); i++) {
-			somaTempoEsperaSargento += temposEsperaSargento.get(i);
-		}
-		for (int i = 0; i < temposEsperaCabo.size(); i++) {
-			somaTempoEsperaCabo += temposEsperaCabo.get(i);
-		}
+        for (Long aLong : temposEsperaOficial) {
+            somaTempoEsperaOficial += aLong;
+        }
+        for (Long aLong : temposEsperaSargento) {
+            somaTempoEsperaSargento += aLong;
+        }
+        for (Long aLong : temposEsperaCabo) {
+            somaTempoEsperaCabo += aLong;
+        }
 		System.out.println(
 				"\nTempo Medio de Espera do Oficial: " + (somaTempoEsperaOficial / temposEsperaOficial.size()));
 		System.out.println(
